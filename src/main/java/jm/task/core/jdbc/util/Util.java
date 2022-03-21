@@ -26,7 +26,6 @@ public class Util {
             throwables.printStackTrace();
         }
         return connection;
-        // реализуйте настройку соеденения с БД
     }
 
 
