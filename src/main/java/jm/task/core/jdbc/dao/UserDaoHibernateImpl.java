@@ -6,6 +6,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -90,13 +92,16 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        List<User> users = null;
+        List<User> users = new ArrayList<>();
         SessionFactory sessionFactory = UtilForHibernate.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            users = (List<User>) session.createCriteria(User.class).list();
+            List list =  session.createQuery("select u from User u").list();
+            for (Object o : list) {
+                users.add((User) o);
+            }
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
