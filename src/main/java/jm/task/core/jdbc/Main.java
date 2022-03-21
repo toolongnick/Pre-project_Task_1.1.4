@@ -2,7 +2,7 @@ package jm.task.core.jdbc;
 
 import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.model.User;
-import jm.task.core.jdbc.util.UtilForHibernate;
+import jm.task.core.jdbc.util.Util;
 ;import java.util.List;
 
 public class Main {
@@ -33,7 +33,7 @@ public class Main {
 
         userService.dropUsersTable();
 
-        UtilForHibernate.getSessionFactory().close();
+        Util.getSessionFactory().close();
     }
 }
 
