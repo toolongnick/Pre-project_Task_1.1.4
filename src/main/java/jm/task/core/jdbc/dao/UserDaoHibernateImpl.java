@@ -2,11 +2,11 @@ package jm.task.core.jdbc.dao;
 
 import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import java.util.ArrayList;
+
+import javax.persistence.Query;
 import java.util.List;
 
 public class UserDaoHibernateImpl implements UserDao {
@@ -77,7 +77,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            User user = (User) session.get(User.class, id);
+            User user = session.get(User.class, id);
             session.delete(user);
             transaction.commit();
         } catch (Exception e) {
@@ -91,16 +91,13 @@ public class UserDaoHibernateImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        List<User> users = new ArrayList<>();
+        List<User> users = null;
         SessionFactory sessionFactory = Util.getSessionFactory();
         Session session = sessionFactory.openSession();
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            List list =  session.createQuery("select u from User u").list();
-            for (Object o : list) {
-                users.add((User) o);
-            }
+            users =  session.createQuery("select u from User u", User.class).list();
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -119,7 +116,7 @@ public class UserDaoHibernateImpl implements UserDao {
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            Query query = session.createSQLQuery("Delete from user");
+            Query query = session.createQuery("Delete from User", User.class);
             query.executeUpdate();
             transaction.commit();
         } catch (Exception e) {
